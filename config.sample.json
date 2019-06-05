@@ -1,4 +1,12 @@
 {
     "port": 3210,
-    "uploads": "uploads/"
+    "uploads": "uploads/",
+    "swift": {
+        "username": "",
+        "password": "",
+        "url": "https://auth....",
+        "domain": "AUTH_..."
+    },
+    "users": [
+    ]
 }

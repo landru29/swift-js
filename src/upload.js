@@ -1,30 +1,49 @@
 module.exports = {
-    upload: (app, opts) => {
+    upload: (app, opts, swiftClient) => {
         const multer  = require('multer')
         const upload = multer({ dest: opts.uploads });
+        const { addFile, addFileStream } = require('./openstack');
 
         app.post('/upload', upload.array('files', 50), function (req, res, next) {
             console.log(req.files);
             // req.files is array of `photos` files
             // req.body will contain the text fields, if there were any
-            
-            const files = req.files.map((file) => {
-                const result = {
-                    thumbnailUrl: "https://jquery-file-upload.appspot.com/image%2Fpng/-5835233320985920217/beer.png.80x80.png",
-                    name: file.originalname,
-                    url:"https://jquery-file-upload.appspot.com/image%2Fpng/-5835233320985920217/beer.png",
-                    deleteType: "DELETE",
-                    type: file.mimetype,
-                    deleteUrl: "https://jquery-file-upload.appspot.com/image%2Fpng/-5835233320985920217/beer.png",
-                    size: getFilesizeInBytes(file.path)
-                };
 
-                deleteFile(file.path);
-
-                return result;
+            Promise.all(
+                req.files.map((file) => {
+                    const fs = require('fs');
+                    const sharp = require('sharp');
+                    const thumb = `thumb_${file.originalname}`;
+                    const thumbPath = `${file.path}_thumb`;
+                    return sharp(file.path)
+                        .resize(100, 100, { fit: 'inside', withoutEnlargement: true })
+                        .toFile(thumbPath)
+                        .then(() => {
+                            return addFile(swiftClient, 'cyrille', thumb, thumbPath, {type: 'thumb'}, opts).then((thumbData) => {
+                                return addFile(swiftClient, 'cyrille', file.originalname, file.path, {}, opts).then((fileData) => {
+                                    const result = {
+                                        thumbnailUrl: thumbData.url,
+                                        name: file.originalname,
+                                        url: fileData.url,
+                                        deleteType: "DELETE",
+                                        type: file.mimetype,
+                                        deleteUrl: "",
+                                        size: getFilesizeInBytes(file.path)
+                                    };
+                    
+                                    deleteFile(file.path);
+                                    deleteFile(thumbPath);
+                    
+                                    return result;
+                                })
+                            });
+                    });
+                })
+            ).then((files) => {
+                res.json({files});
+            }).catch(() => {
+                res.code(500).json({error: "an error occured"})
             });
-            
-            res.json({files});
         });
     }
 }
