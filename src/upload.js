@@ -2,13 +2,9 @@ module.exports = {
     upload: (app, opts, swiftClient) => {
         const multer  = require('multer')
         const upload = multer({ dest: opts.uploads });
-        const { addFile, addFileStream } = require('./openstack');
+        const { addFile } = require('./openstack');
 
         app.post('/upload', upload.array('files', 50), function (req, res, next) {
-            console.log(req.files);
-            // req.files is array of `photos` files
-            // req.body will contain the text fields, if there were any
-
             Promise.all(
                 req.files.map((file) => {
                     const fs = require('fs');
@@ -19,8 +15,8 @@ module.exports = {
                         .resize(100, 100, { fit: 'inside', withoutEnlargement: true })
                         .toFile(thumbPath)
                         .then(() => {
-                            return addFile(swiftClient, 'cyrille', thumb, thumbPath, {type: 'thumb'}, opts).then((thumbData) => {
-                                return addFile(swiftClient, 'cyrille', file.originalname, file.path, {}, opts).then((fileData) => {
+                            return addFile(swiftClient, req.user, thumb, thumbPath, {type: 'thumb'}, opts).then((thumbData) => {
+                                return addFile(swiftClient, req.user, file.originalname, file.path, {}, opts).then((fileData) => {
                                     const result = {
                                         thumbnailUrl: thumbData.url,
                                         name: file.originalname,

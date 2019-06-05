@@ -1,10 +1,12 @@
 {
     "port": 3210,
     "uploads": "uploads/",
+    "prefix": "foo",
     "swift": {
         "username": "",
         "password": "",
         "url": "https://auth....",
+        "public": "https://storage..../v1",
         "domain": "AUTH_..."
     },
     "users": [

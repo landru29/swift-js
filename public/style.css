@@ -1,0 +1,25 @@
+.thumb-list {
+    list-style: none;
+}
+
+.thumb-list li {
+    display: inline-block;
+    margin: 10px;
+}
+
+.thumb-list li {
+    position: relative;
+}
+
+.thumb-list li .close {
+    display: none;
+}
+
+.thumb-list li:hover .close {
+    display: block;
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: #ff0000;
+    padding: 2px 4px 2px 4px;
+}

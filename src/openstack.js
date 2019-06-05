@@ -10,7 +10,7 @@ module.exports = {
           }));
     },
     createContainer: (client, name, opts) => {
-        const containerName = `italie-${name}`;
+        const containerName = `${opts.prefix}-${name}`;
         return client.list().then((data) => {
             if (data.reduce((all, elt) => all || elt.name === containerName, false) === false) {
                 return client.create(containerName, true, {}).then(() => containerName);
@@ -21,11 +21,28 @@ module.exports = {
     addFile: (client, username, name, filename, meta, opts) => {
         const fs = require('fs');
         const stream = fs.createReadStream(filename);
-        const container = client.container(`italie-${username}`);
+        const container = client.container(`${opts.prefix}-${username}`);
         return container.create(name, stream, meta).then(() => {
             return {
-                url: `https://storage.de1.cloud.ovh.net/v1/AUTH_3a41d7684b854e98b76a6a8b52ec32fd/italie-${username}/${name}`
+                url: `${opts.swift.public}/${opts.swift.domain}/${opts.prefix}-${username}/${name}`
             }
+        });
+    },
+    readFiles: (client, username, prefix, marker, limit, opts) => {
+        const container = client.container(`${opts.prefix}-${username}`);
+        const query = {
+            limit,
+            prefix
+        };
+        if (marker !== null) {
+            query.marker = marker;
+        }
+        return container.list({}, query);
+    },
+    deleteFile: (client, username, name, opts) => {
+        const container = client.container(`${opts.prefix}-${username}`);
+        return container.delete(name).then(() => {
+            return true
         });
     }
 }

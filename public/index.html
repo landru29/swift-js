@@ -22,36 +22,18 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="style.css">
         <link rel="stylesheet" href="https://blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
         <link rel="stylesheet" href="css/jquery.fileupload.css">
         <link rel="stylesheet" href="css/jquery.fileupload-ui.css">
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
         <noscript><link rel="stylesheet" href="css/jquery.fileupload-noscript.css"></noscript>
         <noscript><link rel="stylesheet" href="css/jquery.fileupload-ui-noscript.css"></noscript>
     </head>
     <body>
-        <div class="navbar navbar-default navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-fixed-top .navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="https://github.com/blueimp/jQuery-File-Upload">jQuery File Upload</a>
-                </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li><a href="https://github.com/blueimp/jQuery-File-Upload/tags">Download</a></li>
-                        <li><a href="https://github.com/blueimp/jQuery-File-Upload">Source Code</a></li>
-                        <li><a href="https://github.com/blueimp/jQuery-File-Upload/wiki">Documentation</a></li>
-                        <li><a href="https://blueimp.net">&copy; Sebastian Tschan</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
         <div class="container">
             <h1>Italie</h1>
-            <br>
+            
             <!-- The file upload form used as target for the file upload widget -->
             <form id="fileupload" action="https://jquery-file-upload.appspot.com/" method="POST" enctype="multipart/form-data">
                 <!-- Redirect browsers with JavaScript disabled to the origin page -->
@@ -73,12 +55,6 @@
                             <i class="glyphicon glyphicon-ban-circle"></i>
                             <span>Cancel upload</span>
                         </button>
-                        <!--<button type="button" class="btn btn-danger delete">
-                            <i class="glyphicon glyphicon-trash"></i>
-                            <span>Delete</span>
-                        </button>
-                        <input type="checkbox" class="toggle">-->
-                        <!-- The global file processing state -->
                         <span class="fileupload-process"></span>
                     </div>
                     <!-- The global progress state -->
@@ -94,17 +70,13 @@
                 <!-- The table listing the files available for upload/download -->
                 <table role="presentation" class="table table-striped"><tbody class="files"></tbody></table>
             </form>
+
+            <div id="albums">
+                <ul id="album-list"></ul>
+            </div>
+            <ul id="thumbs"></ul>
         </div>
-        <!-- The blueimp Gallery widget -->
-        <div id="blueimp-gallery" class="blueimp-gallery blueimp-gallery-controls" data-filter=":even">
-            <div class="slides"></div>
-            <h3 class="title"></h3>
-            <a class="prev">‹</a>
-            <a class="next">›</a>
-            <a class="close">×</a>
-            <a class="play-pause"></a>
-            <ol class="indicator"></ol>
-        </div>
+
         <!-- The template to display files available for upload -->
         <script id="template-upload" type="text/x-tmpl">
         {% for (var i=0, file; file=o.files[i]; i++) { %}
@@ -185,7 +157,7 @@
         {% } %}
         </script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" integrity="sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f" crossorigin="anonymous"></script> 
-        <script src="file-upload/vendor/jquery.ui.widget.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
         <script src="https://blueimp.github.io/JavaScript-Templates/js/tmpl.min.js"></script>
         <script src="https://blueimp.github.io/JavaScript-Load-Image/js/load-image.all.min.js"></script>
         <script src="https://blueimp.github.io/JavaScript-Canvas-to-Blob/js/canvas-to-blob.min.js"></script>
