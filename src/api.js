@@ -6,7 +6,7 @@ module.exports = {
         });
 
         app.get('/albums/:name', function (req, res) {
-            const limit = parseInt(req.query.limit, 10) || 10;
+            const limit = parseInt(req.query.limit, 10) || 40;
             const marker = req.query.marker || null;
 
             readFiles(swiftClient, req.params.name, 'thumb_', marker, limit, opts).then((data) => {
