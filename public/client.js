@@ -1,4 +1,6 @@
 $(function () {
+
+    window.canDelete = false;
     
     const tabInit = {};
     let tabs = [];
@@ -43,6 +45,15 @@ $(function () {
         initTab(0);
     });
 
+    $('input#can_delete').click(function () {
+        window.canDelete = $('input#can_delete').is(':checked');
+        if (window.canDelete) {
+            $('button.close').removeAttr('style');
+        } else {
+            $('button.close').css('display', 'none');
+        }
+    });
+
 
     function initTab(index, force) {
         const tabName = tabs[index];
@@ -57,15 +68,19 @@ $(function () {
                     $('#tabs-' + (index+1) + '>ul').append('<li><a href="' + file.file + '" target="blank"><img src="' + file.thumb + '"></a><button class="btn btn-info close" type="button"><i class="glyphicon glyphicon-remove" aria-hidden="true"></i></button></li>');
                     $('#tabs-' + (index+1) + ' ul li:last-child button.close').click(function() {
                         console.log('delete', file);
-                        $.ajax({
-                            url: 'albums/' + tabName + '/' + file.filename,
-                            type: 'DELETE',
-                            success: function(result) {
-                                initTab(index, true);
-                            }
-                        });$.del
+                        if ($('input#can_delete').is(':checked')) {
+                            $.ajax({
+                                url: 'albums/' + tabName + '/' + file.filename,
+                                type: 'DELETE',
+                                success: function(result) {
+                                    initTab(index, true);
+                                }
+                            });
+                        }
                     });
                 } );
+
+                $('button.close').css('display', 'none');
                 if (data.length) {
                     markers[tabName] = data[data.length-1].thumbName;
                 }

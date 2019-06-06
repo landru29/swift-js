@@ -5,6 +5,9 @@
 .thumb-list li {
     display: inline-block;
     margin: 10px;
+    width: 100px;
+    height: 100px;
+    text-align: center;
 }
 
 .thumb-list li {
