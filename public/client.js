@@ -47,7 +47,7 @@ $(function () {
     function initTab(index, force) {
         const tabName = tabs[index];
         if (!tabInit[tabName] || force) {
-            const query = ['limit=10'];
+            const query = ['limit=40'];
             if (markers[tabName]) {
                 query.push('marker=' + encodeURIComponent(markers[tabName]));
             }
